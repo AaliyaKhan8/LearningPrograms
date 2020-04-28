@@ -1,10 +1,15 @@
 import java.util.*;
 class Sharing
 {
-	static HashMap<String,Integer> hmap;
+	HashMap hmap;
+	Sharing(HashMap<String,int> hmap)
+	{
+		this.hmap=hmap;
+	}
 	public static void main(String[] args)
 	{
 		hmap=new HashMap<>();
+		Sharing sharing = new Sharing(hmap);
 		Scanner s=new Scanner(System.in);
 		int numberOfLines=s.nextInt();
 		String term;
@@ -12,11 +17,11 @@ class Sharing
 		for(int i=0;i<numberOfLines;i++)
 		{
 			term=s.nextLine();
-			calculate(term);
+			sharing.calculate(term);
 		}
-		display();
+		sharing.display();
 	}
-	public static void calculate(String term)
+	public void calculate(String term)
 	{
 		int money;
 		String[] arr=term.split(" ");
@@ -49,7 +54,7 @@ class Sharing
 			}
 		}
 	}
-	public static void display()
+	public void display()
 	{
 		hmap.forEach((k, v) -> {
 			if(v>0)

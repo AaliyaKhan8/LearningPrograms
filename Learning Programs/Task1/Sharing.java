@@ -1,81 +1,62 @@
 import java.util.*;
 class Sharing
 {
-	static int A=0,B=0,C=0;
+	static HashMap<String,Integer> hmap;
 	public static void main(String[] args)
 	{
+		hmap=new HashMap<>();
 		Scanner s=new Scanner(System.in);
 		int numberOfLines=s.nextInt();
-		String value;
+		String term;
 		s.nextLine();
 		for(int i=0;i<numberOfLines;i++)
 		{
-			value=s.nextLine();
-			calculate(value);
+			term=s.nextLine();
+			calculate(term);
 		}
 		display();
 	}
-	public static void calculate(String value)
+	public static void calculate(String term)
 	{
 		int money;
-		String[] arr=value.split(" ");
-		if(arr.length==3)
+		String[] arr=term.split(" ");
+		money=Integer.parseInt(arr[0])/(arr.length-1);
+		if(!(hmap.containsKey(arr[1])))
 		{
-			money=Integer.parseInt(arr[0])/2;
-			if(arr[1].equals("A"))
-				A+=money;
-			else if(arr[1].equals("B"))
-				B+=money;
-			else if(arr[1].equals("C"))
-				C+=money;
-			if(arr[2].equals("A"))
-				A-=money;
-			else if(arr[2].equals("B"))
-				B-=money;
-			else if(arr[2].equals("C"))
-				C-=money;
+			hmap.put(arr[1],money*(arr.length-2));
 		}
-		if(arr.length==4)
+		else
 		{
-			
-			money=Integer.parseInt(arr[0])/3;
-			if(arr[1].equals("A"))
-				A+=money+money;
-			else if(arr[1].equals("B"))
-				B+=money+money;
-			else if(arr[1].equals("C"))
-				C+=money+money;
-			if(arr[2].equals("A"))
-				A-=money;
-			else if(arr[2].equals("B"))
-				B-=money;
-			else if(arr[2].equals("C"))
-				C-=money;
-			if(arr[3].equals("A"))
-				A-=money;
-			else if(arr[3].equals("B"))
-				B-=money;
-			else if(arr[3].equals("C"))
-				C-=money;
+			int value=hmap.get(arr[1]);
+			value=value+(money*(arr.length-2));
+			hmap.replace(arr[1],value);
 		}
-		
+		if(arr.length>2)
+		{
+			for(int i=2;i<arr.length;i++)
+			{
+				if(!(hmap.containsKey(arr[i])))
+				{
+					int value=0;
+					hmap.put(arr[i],value-money);
+				}
+				else
+				{
+					int value=hmap.get(arr[i]);
+					value=value-money;
+					hmap.replace(arr[i],value);
+				}
+			}
+		}
 	}
 	public static void display()
 	{
-		if(A>0)
-			System.out.println("A gets "+A);
-		else
-			System.out.println("A gives "+Math.abs(A));
-		
-		if(B>0)
-			System.out.println("B gets "+B);
-		else
-			System.out.println("B gives "+Math.abs(B));
-		
-		if(C>0)
-			System.out.println("C gets "+C);
-		else
-			System.out.println("C gives "+Math.abs(C));
+		hmap.forEach((k, v) -> {
+			if(v>0)
+				System.out.println(k+" gets "+Math.abs(v));
+			else
+				System.out.println(k+" gives "+Math.abs(v));
+		});
 		
 	}
 }
